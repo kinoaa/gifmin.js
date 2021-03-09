@@ -9,6 +9,7 @@ gifmin(array, colors)
 取值0~256之间，代表gif图的色盘，值越小压缩后的文件越小色彩越单调，值越大压缩后的文件越大色彩越丰富
 # 实例
 ## 压缩GIF后上传，实现GIF压缩上传
+`记得先下载min.js到本地，然后引入哦！<script src="../js/lib/gifmin.min.js"></script>`
 ```JavaScript
 /**
  * 压缩方法
