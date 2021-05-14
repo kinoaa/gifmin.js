@@ -8,7 +8,45 @@ gifmin(array, colors)
 ### `colors`
 取值0~256之间，代表gif图的色盘，值越小压缩后的文件越小色彩越单调，值越大压缩后的文件越大色彩越丰富
 # 实例
-## 压缩GIF后上传，实现GIF压缩上传
+## Vue使用Demo
+**由于压缩需要一定时间，建议加个loading效果**
+1. 下载`gifmin.min.js`到本地，放入静态资源文件夹
+2. 在`index.html`引入
+```js
+<script src="/lib/gifmin.js"></script>
+```
+3. 使用Demo
+```js
+gifImg(file) {
+      const loadings = this.$loading({
+        lock: true,
+        text: 'GIF图片压缩中...',
+        spinner: 'el-icon-loading',
+        background: 'rgba(0, 0, 0,0.7)'
+      })
+      const that = this
+      if (window.FileReader) {
+        var fr = new FileReader()
+        fr.readAsArrayBuffer(file)
+        fr.onload = function(e) {
+          var colors = 70 // 介于0~256之间数值越小压缩后文件越小
+          // eslint-disable-next-line no-undef
+          var result = gifmin(fr.result, colors) // 二进制文件流
+          console.log(result)
+          var obj = new Blob([result], { // 转换成Blob对象
+            type: 'application/octet-stream'
+          })
+          that.gifFile = new window.File([obj], file.name, { // 转换成file文件
+            type: file.type
+          })
+          that.gifUrl = window.URL.createObjectURL(file)
+          that.formData.gifUrl = 'yes'
+          loadings.close()
+        }
+      }
+    }
+```
+## 压缩GIF后上传，实现GIF压缩上传（jq使用Demo）
 `记得先下载min.js到本地，然后引入哦！<script src="../js/lib/gifmin.min.js"></script>`
 ```JavaScript
 /**
